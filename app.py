@@ -7,6 +7,9 @@ from typing import Tuple, Dict, Any
 
 st.set_page_config(page_title="Retail Sales Intelligence App", layout="wide")
 st.sidebar.write("DEBUG - XSRF Active:", st.get_option("server.enableXsrfProtection"))
+st.sidebar.subheader("Security Diagnostics")
+st.sidebar.write("XSRF Active:", st.get_option("server.enableXsrfProtection"))
+st.sidebar.write("CORS Active:", st.get_option("server.enableCORS"))
 # Helper: map common column name variants to canonical names
 COMMON_WEEKLY_VARIANTS = {
     'Week': ['week', 'wk', 'weekstartdate', 'week_start_date', 'week start date', 'weekstart', 'week_start'],
