@@ -6,10 +6,7 @@ import plotly.express as px
 from typing import Tuple, Dict, Any
 
 st.set_page_config(page_title="Retail Sales Intelligence App", layout="wide")
-st.sidebar.write("DEBUG - XSRF Active:", st.get_option("server.enableXsrfProtection"))
-st.sidebar.subheader("Security Diagnostics")
-st.sidebar.write("XSRF Active:", st.get_option("server.enableXsrfProtection"))
-st.sidebar.write("CORS Active:", st.get_option("server.enableCORS"))
+
 # Helper: map common column name variants to canonical names
 COMMON_WEEKLY_VARIANTS = {
     'Week': ['week', 'wk', 'weekstartdate', 'week_start_date', 'week start date', 'weekstart', 'week_start'],
@@ -174,22 +171,8 @@ weekly_uploader = st.sidebar.file_uploader("Weekly Sales (.xlsx)", type=["xlsx"]
 master_uploader = st.sidebar.file_uploader("Store Master (.xlsx)", type=["xlsx"])
 use_sample = st.sidebar.checkbox("Use Sample Data", value=False)
 
-# Option: load directly from default local data files
-LOAD_FROM_DISK = st.sidebar.checkbox("Use default local Excel files", value=False)
-DEFAULT_WEEKLY_PATH = r"C:\Users\sharadha.gopalak\Downloads\StackAI Foundation - AI Native App Building Assignment - Level 1\StackAI Foundation - AI Native App Building Assignment - Level 1\data\retail_weekly_sales.xlsx"
-DEFAULT_MASTER_PATH = r"C:\Users\sharadha.gopalak\Downloads\StackAI Foundation - AI Native App Building Assignment - Level 1\StackAI Foundation - AI Native App Building Assignment - Level 1\data\store_master.xlsx"
-if LOAD_FROM_DISK:
-    try:
-        # if files exist, set uploaders to file paths so load_and_merge_data can read them
-        import os
-        if os.path.exists(DEFAULT_WEEKLY_PATH) and os.path.exists(DEFAULT_MASTER_PATH):
-            weekly_uploader = DEFAULT_WEEKLY_PATH
-            master_uploader = DEFAULT_MASTER_PATH
-            st.sidebar.success("Loading files from default disk paths.")
-        else:
-            st.sidebar.error("Default files not found at expected paths. Please upload manually.")
-    except Exception:
-        st.sidebar.error("Error accessing default files. Please upload manually.")
+# Only use Streamlit upload widgets for hosted deployments
+# Local path loading is disabled to avoid deployment and permission issues.
 
 df = None
 summary = None
