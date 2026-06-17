@@ -41,13 +41,19 @@ def _apply_variants(df: pd.DataFrame, variants: Dict[str, list]):
         df.rename(columns=rename_map, inplace=True)
 
 
-@st.cache_data
+def _read_excel_source(source):
+    if hasattr(source, "read"):
+        raw = source.read()
+        return pd.read_excel(io.BytesIO(raw))
+    return pd.read_excel(source)
+
+
 def load_and_merge_data(weekly_file, master_file) -> Tuple[pd.DataFrame | None, str | None, Dict[str, Any] | None]:
     """Load two Excel-like uploads, normalize columns, merge on `Store_ID` and return merged dataframe plus diagnostics."""
     try:
         # Accept both file paths and uploaded file-like objects
-        df_weekly = pd.read_excel(weekly_file)
-        df_master = pd.read_excel(master_file)
+        df_weekly = _read_excel_source(weekly_file)
+        df_master = _read_excel_source(master_file)
 
         # Strip column names
         df_weekly.columns = df_weekly.columns.str.strip()
